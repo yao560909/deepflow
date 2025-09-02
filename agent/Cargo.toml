@@ -1,0 +1,24 @@
+[package]
+name = "deepflow-agent"
+version = "0.1.0"
+edition = "2021"
+default-run = "deepflow-agent"
+
+[dependencies]
+anyhow = "1.0"
+log = "0.4"
+clap = { version = "3.2.8", features = ["derive"] }
+serde.workspace = true
+
+[workspace]
+
+[workspace.dependencies]
+tonic = "0.10"
+tonic-build = "0.10"
+serde = { version = "1.0", features = ["derive"] }
+
+
+[build-dependencies]
+anyhow = "1.0"
+chrono = "0.4"
+tonic-build.workspace = true
