@@ -1,9 +1,26 @@
 mod trident;
+mod utils;
+mod config;
+mod common;
 
 use std::panic;
+use std::path::Path;
 use anyhow::Result;
 use log::error;
 use clap::{ArgAction,Parser};
+use signal_hook::consts::TERM_SIGNALS;
+use signal_hook::iterator::Signals;
+
+#[cfg(unix)]
+fn wait_on_signals() {
+    let mut signals = Signals::new(TERM_SIGNALS).unwrap();
+    signals.forever().next();
+    // log::info!(
+    //     "The Process exits due to signal {:?}.",
+    //     signals.forever().next()
+    // );
+    signals.handle().close();
+}
 
 #[derive(Parser)]
 struct Opts {
@@ -83,5 +100,16 @@ fn main() -> Result<()>{
         println!("{}", VERSION_INFO);
         return Ok(());
     }
+    trident::Trident::start(
+        &Path::new(&opts.config_file),
+        VERSION_INFO,
+        if opts.standalone {
+            trident::RunningMode::Standalone
+        } else {
+            trident::RunningMode::Managed
+        },
+        opts.sidecar,
+        opts.cgroups_disabled,)?;
+    wait_on_signals();
     Ok(())
 }

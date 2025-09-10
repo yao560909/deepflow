@@ -9,16 +9,31 @@ anyhow = "1.0"
 log = "0.4"
 clap = { version = "3.2.8", features = ["derive"] }
 serde.workspace = true
+signal-hook = "0.3"
+public.workspace = true
+thiserror = "1.0"
+serde_yaml = "0.9"
+
 
 [workspace]
+members = ["crates/*"]
 
 [workspace.dependencies]
 tonic = "0.10"
 tonic-build = "0.10"
 serde = { version = "1.0", features = ["derive"] }
+public = { path = "crates/public" }
 
 
 [build-dependencies]
 anyhow = "1.0"
 chrono = "0.4"
 tonic-build.workspace = true
+
+[target.'cfg(any(target_os = "linux", target_os = "android"))'.dependencies]
+cgroups-rs = "0.2.9"
+nix = "0.23"
+
+#TODO:for macos
+[target.'cfg(any(target_os = "macos"))'.dependencies]
+nix = "0.23"
