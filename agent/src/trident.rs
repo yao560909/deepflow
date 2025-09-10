@@ -9,7 +9,9 @@ use log::error;
 use anyhow::{anyhow, Result};
 use public::consts::DEFAULT_TRIDENT_CONF_FILE;
 use crate::config::config::{Config, ConfigError};
-
+use crate::config::handler::ConfigHandler;
+use crate::utils::environment::get_ctrl_ip_and_mac;
+use crate::utils::command::get_hostname;
 pub struct VersionInfo {
     pub name: &'static str,
     pub branch: &'static str,
@@ -118,6 +120,17 @@ impl Trident{
             }
         };
         let controller_ip: IpAddr = config.controller_ips[0].parse()?;
+        let (ctrl_ip, ctrl_mac) = match get_ctrl_ip_and_mac(&controller_ip) {
+            Ok(tuple) => tuple,
+            Err(e) => return Err(anyhow!("get ctrl ip and mac failed: {}", e)),
+        };
+        let mut config_handler = ConfigHandler::new(config, ctrl_ip, ctrl_mac);
+        let config = &config_handler.static_config;
+        let cgroups_disabled = cgroups_disabled || config.cgroups_disabled;
+        let hostname = match config.override_os_hostname.as_ref() {
+            Some(name) => name.to_owned(),
+            None => get_hostname().unwrap_or("Unknown".to_string()),
+        };
 
         let state = Arc::new(AgentState::default());
         let main_loop = thread::Builder::new()

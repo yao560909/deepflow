@@ -1,5 +1,6 @@
 mod pid_file;
-mod environment;
+pub(crate) mod environment;
+pub(crate) mod command;
 
 use std::thread;
 use std::time::Duration;
