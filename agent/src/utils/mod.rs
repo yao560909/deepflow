@@ -1,4 +1,5 @@
 mod pid_file;
+mod environment;
 
 use std::thread;
 use std::time::Duration;

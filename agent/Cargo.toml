@@ -13,6 +13,8 @@ signal-hook = "0.3"
 public.workspace = true
 thiserror = "1.0"
 serde_yaml = "0.9"
+regex.workspace = true
+
 
 
 [workspace]
@@ -23,6 +25,7 @@ tonic = "0.10"
 tonic-build = "0.10"
 serde = { version = "1.0", features = ["derive"] }
 public = { path = "crates/public" }
+regex = "1"
 
 
 [build-dependencies]

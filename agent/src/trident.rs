@@ -118,7 +118,7 @@ impl Trident{
             }
         };
         let controller_ip: IpAddr = config.controller_ips[0].parse()?;
-        println!("{}",controller_ip);
+
         let state = Arc::new(AgentState::default());
         let main_loop = thread::Builder::new()
             .name("main-loop".to_owned())

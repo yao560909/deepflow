@@ -5,6 +5,16 @@ edition = "2024"
 
 [dependencies]
 tonic.workspace = true
+serde = { version = "1.0.219", features = ["derive"] }
+thiserror = "1.0"
+regex.workspace = true
+libc = "0.2.149"
+
 
 [build-dependencies]
 tonic-build.workspace = true
+
+[target.'cfg(any(target_os = "linux", target_os = "android"))'.dependencies]
+neli = "0.6.4"
+nix = "0.23"
+

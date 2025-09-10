@@ -1,7 +1,4 @@
-mod trident;
-mod utils;
-mod config;
-mod common;
+
 
 use std::panic;
 use std::path::Path;
@@ -10,6 +7,7 @@ use log::error;
 use clap::{ArgAction,Parser};
 use signal_hook::consts::TERM_SIGNALS;
 use signal_hook::iterator::Signals;
+use deepflow_agent::*;
 
 #[cfg(unix)]
 fn wait_on_signals() {
